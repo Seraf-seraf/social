@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_images', function (Blueprint $table) {
-            $table->id();
-            $table->string('path');
+        Schema::table('post_images', function (Blueprint $table) {
             $table->boolean('status')->default(false);
-            $table->foreignId('post_id')->index()->nullable()->constrained('posts');
-            $table->foreignId('user_id')->index()->nullable()->constrained('users');
-            $table->timestamps(); 
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_images');
+        Schema::table('post_images', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
     }
 };
