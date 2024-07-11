@@ -45,6 +45,8 @@ class PostController extends Controller
 
             $this->proccessImage($post, $imageId);
 
+            PostImage::clearStorage();
+
             DB::commit();
             } catch (\Exception $exception) {
                 DB::rollBack();
