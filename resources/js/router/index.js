@@ -1,13 +1,19 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: '/index', component: () => import('../views/Index.vue'),
+            path: '/users/index', component: () => import('../views/user/Index.vue'),
+            name: 'user.index'
         },
         {
-            path: '/page', component: () => import('../views/Page.vue'),
+            path: '/users/:id/show', component: () => import('../views/user/Show.vue'),
+            name: 'user.show'
+        },
+        {
+            path: '/users/feed', component: () => import('../views/user/Feed.vue'),
+            name: 'user.feed'
         },
         {
             path: '/users/login', component: () => import('../views/user/Login.vue'),
@@ -24,19 +30,18 @@ const router = createRouter({
     ]
 })
 
+
 router.beforeEach((to, from, next) => {
 
-        
     axios.get('/api/user')
-            // .then( res => {
-            //     console.log(res.data);
-            // })
-            .catch(e => {
-                if (e.response.status === 401) {
-                    console.log(e)
-                    localStorage.key('x_xsrf_token') ? localStorage.removeItem('x_xsrf_token') : ''
-                } 
-            })
+        .then( res => {
+            console.log(res.data);
+        })
+        .catch(e => {
+            if (e.response.status === 401) {
+                localStorage.key('x_xsrf_token') ? localStorage.removeItem('x_xsrf_token') : ''
+            }
+        })
 
     const token = localStorage.getItem('x_xsrf_token')
 

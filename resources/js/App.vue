@@ -1,12 +1,15 @@
 <template>
     <div>
-        <h1 class="text-center text-3xl font-bold underline">
-            Hello world!
-        </h1>
-        <router-link v-if="!token" :to="{ name: 'user.login'}">Login</router-link>
-        <router-link v-if="token" :to="{ name: 'user.personal'}">Personal</router-link>
-        <router-link v-if="!token" :to="{ name: 'user.registration'}">Registration</router-link>
-        <a v-if="token" @click.prevent="logout" href="#">Logout</a>
+        <div class="flex justify-between p-8 w-96 mx-auto">
+
+            <router-link v-if="!token" :to="{ name: 'user.login'}">Login</router-link>
+            <router-link v-if="token" :to="{ name: 'user.index'}">Users</router-link>
+            <router-link v-if="token" :to="{ name: 'user.feed'}">Feed</router-link>
+            <router-link v-if="token" :to="{ name: 'user.personal'}">Personal</router-link>
+            <router-link v-if="!token" :to="{ name: 'user.registration'}">Registration</router-link>
+            <a v-if="token" @click.prevent="logout" href="#">Logout</a>
+        </div>
+
         <router-view></router-view>
     </div>
 </template>
@@ -43,7 +46,7 @@ export default {
                     this.$router.push({name: 'user.login'})
                 })
         }
-    },
+    }
 }
 </script>
 
