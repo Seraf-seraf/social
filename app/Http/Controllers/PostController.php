@@ -16,7 +16,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        return 111111;//
+        $posts = Post::where('user_id', auth()->id())->latest()->get(); 
+        return PostResource::collection($posts);
     }
 
     /**

@@ -35,16 +35,16 @@
             </div>
         </div>
 
-        <!-- <div v-if="posts">
+        <div v-if="posts">
             <h1 class="mb-8 pb-8 border-b border-gray-400">Posts</h1>
             <Post v-for="post in posts" :post="post"></Post>
-        </div> -->
+        </div>
 
     </div>
 </template>
 
 <script>
-// import Post from "../../components/Post.vue";
+import Post from "../../components/Post.vue";
 // import Stat from "../../components/Stat.vue";
 export default {
     name: "Personal",
@@ -60,15 +60,15 @@ export default {
         }
     },
 
-    // components: {
-    //     Post,
+     components: {
+         Post,
     //     Stat
-    // },
+     },
 
-    // mounted() {
-    //     this.getPosts()
+     mounted() {
+        this.getPosts()
     //     this.getStats()
-    // },
+     },
 
     methods: {
 
