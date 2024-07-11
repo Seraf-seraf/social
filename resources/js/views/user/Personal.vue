@@ -109,7 +109,7 @@ export default {
             const formData = new FormData()
             formData.append('image', file)
 
-            axios.post('/api/post_image', formData)
+            axios.post('/api/post_images', formData)
                 .then(res => {
                     this.image = res.data.data
                 })

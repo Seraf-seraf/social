@@ -9,8 +9,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     // Route::get('/posts', [App\Http\Controllers\PostController::class, 'index']);
-    Route::post('/post', [\App\Http\Controllers\PostController::class, 'store']);
-    Route::post('/post_image', [\App\Http\Controllers\PostImageController::class, 'store']);
+    Route::post('/posts', [\App\Http\Controllers\PostController::class, 'store']);
+    Route::post('/post_images', [\App\Http\Controllers\PostImageController::class, 'store']);
     // Route::get('/posts/{post}', [App\Http\Controllers\PostController::class, 'show']);
     // Route::put('/posts/{post}', [App\Http\Controllers\PostController::class, 'update']);
     // Route::delete('/posts/{post}', [App\Http\Controllers\PostController::class, 'destroy']);
