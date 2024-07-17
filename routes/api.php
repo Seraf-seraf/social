@@ -19,4 +19,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // Route::get('/posts/{post}', [App\Http\Controllers\PostController::class, 'show']);
     // Route::put('/posts/{post}', [App\Http\Controllers\PostController::class, 'update']);
     // Route::delete('/posts/{post}', [App\Http\Controllers\PostController::class, 'destroy']);
+    Route::get('/posts/{post}/toggle_like', [\App\Http\Controllers\PostController::class, 'toggleLike']);
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\User\UserResource;
+use App\Models\LikedPost;
 use App\Models\Post;
 use App\Models\PostImage;
 use App\Models\SubscriberFollowing;
@@ -30,7 +31,9 @@ class UserController extends Controller
     }
 
     public function post(User $user) {
-        return PostResource::collection($user->posts());
+        $posts = $user->posts()->latest()->get();
+        $posts = $this->prepareLikedPosts($posts);
+        return PostResource::collection($posts);
     }
 
     public function toggleFollowing(User $user) {
@@ -42,9 +45,29 @@ class UserController extends Controller
     }
 
     public function followingPost() {
-        $followedIds = auth()->user()->followings()->get()->pluck('id')->toArray();
-        $posts = Post::whereIn('user_id', $followedIds)->get();
+        $followedIds = auth()->user()->followings()->latest()->get()->pluck('id')->toArray();
+        
+        $likedPostIds = LikedPost::where('user_id', auth()->id())
+        ->get('post_id')->pluck('post_id')->toArray();
+        
+        $posts = Post::whereIn('user_id', $followedIds)
+            ->whereNotIn('id', $likedPostIds)->get();
 
         return PostResource::collection($posts);
     }
+
+    private function prepareLikedPosts ($posts) {
+        $likedPostIds = LikedPost::where('user_id', auth()->id())
+        ->get('post_id')->pluck('post_id')->toArray();
+
+        foreach ($posts as $post) {
+            if (in_array($post->id, $likedPostIds)) {
+                $post->is_liked = true;
+            } 
+        }
+
+        return $posts;
+    }
+
+    
 }
