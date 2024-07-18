@@ -7,7 +7,7 @@
 
         <div v-if="post.reposted_post" class="bg-gray-100 p-4 my-4 border border-gray-200">
             <h1 class="text-xl">{{ post.reposted_post.title }}</h1>
-            <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.reposted_post.user.id}} ">{{ post.reposted_post.user.name }}</router-link>
+            <!-- <router-link class="text-sm text-gray-800" :to="{name: 'user.show', params: {id: post.reposted_post.user.id}} ">{{ post.reposted_post.user.name }}</router-link> -->
 
             <img class="my-3 mx-auto" v-if="post.reposted_post.image_url" :src="post.reposted_post.image_url"
                  :alt="post.reposted_post.title"/>
