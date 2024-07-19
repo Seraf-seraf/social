@@ -9,6 +9,7 @@ class Post extends Model
 {
     protected $table = 'posts';
     protected $guarded = false;
+    protected $withCount = ['comments'];
     
     protected $with = ['image', 'likedUsers', 'repostedPost'];
 
@@ -21,8 +22,16 @@ class Post extends Model
         return $this->belongsToMany(User::class, 'liked_posts', 'post_id', 'user_id');  
     }
 
+    public function getDateAttribute() {
+        return $this->created_at->diffForHumans();
+    }
+
     public function repostedPost() {
         return $this->belongsTo(Post::class, 'reposted_id', 'id'); 
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class, 'post_id', 'id');  
     }
 
     

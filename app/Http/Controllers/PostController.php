@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Post\CommentRequest;
 use App\Http\Requests\Post\RepostRequest;
 use App\Http\Requests\Post\StoreRequest;
+use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Post\PostResource;
+use App\Models\Comment;
 use App\Models\LikedPost;
 use App\Models\Post;
 use App\Models\PostImage;
@@ -125,5 +128,20 @@ class PostController extends Controller
         $data['likes_count'] = $post->likedUsers()->count(); 
 
         return $data;
+    }
+
+    public function comment(CommentRequest $request, Post $post) {
+        $data = $request->validated();
+
+        $data['user_id'] = auth()->id();
+        $data['post_id'] = $post->id;
+
+        $comment = Comment::create($data);
+
+        return new CommentResource($comment);
+    }
+
+    public function commentList(Post $post) {
+        return CommentResource::collection($post->comments);
     }
 }

@@ -9,4 +9,14 @@ class Comment extends Model
 {
     protected $table = 'comments';
     protected $guarded = false;
+
+    protected $with = ['user'];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function getDateAttribute() {
+        return $this->created_at->diffForHumans();
+    }
 }
