@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Post\StoreRequest;
+use App\Http\Requests\User\StatRequest;
 use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\LikedPost;
@@ -31,7 +32,7 @@ class UserController extends Controller
     }
 
     public function post(User $user) {
-        $posts = $user->posts()->latest()->get();
+        $posts = $user->posts()->withCount('repostedByPosts')->latest()->get();
         $posts = $this->prepareLikedPosts($posts);
         return PostResource::collection($posts);
     }
@@ -50,7 +51,7 @@ class UserController extends Controller
         $likedPostIds = LikedPost::where('user_id', auth()->id())
         ->get('post_id')->pluck('post_id')->toArray();
         
-        $posts = Post::whereIn('user_id', $followedIds)
+        $posts = Post::whereIn('user_id', $followedIds)->withCount('repostedByPosts')
             ->whereNotIn('id', $likedPostIds)->get();
 
         return PostResource::collection($posts);
@@ -67,6 +68,22 @@ class UserController extends Controller
         }
 
         return $posts;
+    }
+
+    public function stat(StatRequest $request) {
+        $data = $request->validated();
+        $userId = isset($data['user_id']) ? $data['user_id'] : auth()->id();
+
+        $result = [];
+        $result['subscribers_count'] = SubscriberFollowing::where('following_id', $userId)->count();
+        $result['followings_count'] = SubscriberFollowing::where('subscriber_id', $userId)->count();
+        $result['likes_count'] = LikedPost::where('user_id', $userId)->count();
+
+        $postIds = Post::where('user_id', $userId)->get('id')->pluck('id')->toArray();
+        $result['likes_count'] = LikedPost::whereIn('post_id', $postIds)->count();
+        $result['posts_count'] = count($postIds);
+
+        return response()->json(['data' => $result]);
     }
 
     

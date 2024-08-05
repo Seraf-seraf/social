@@ -1,6 +1,6 @@
 <template>
     <div class="w-96 mx-auto">
-        
+        <Stat :stats="stats"></Stat>
         <div class="mb-4">
             <div class=" mb-3">
                 <input v-model="title" class="w-96 rounded-3xl border p-2 border-slate-300" type="text"
@@ -45,7 +45,7 @@
 
 <script>
 import Post from "../../components/Post.vue";
-// import Stat from "../../components/Stat.vue";
+import Stat from "../../components/Stat.vue";
 export default {
     name: "Personal",
 
@@ -62,12 +62,12 @@ export default {
 
      components: {
          Post,
-    //     Stat
+         Stat
      },
 
      mounted() {
         this.getPosts()
-    //     this.getStats()
+        this.getStats()
      },
 
     methods: {
